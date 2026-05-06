@@ -1,0 +1,21 @@
+# Java / Maven
+target/
+*.class
+.mvn/
+.metadata/
+.classpath
+.project
+.settings/
+
+# Node / Astro
+node_modules/
+dist/
+.astro/
+npm-debug.log*
+pnpm-debug.log*
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+.DS_Store
