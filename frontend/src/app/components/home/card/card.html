@@ -1,4 +1,4 @@
-<div class="backdrop-blur-sm rounded-2xl border p-6 shadow-xl transition-all duration-300"
+<div class="h-full backdrop-blur-sm rounded-2xl border p-6 shadow-xl transition-all duration-300"
      [ngClass]="[theme().border, theme().bg]">
   <div class="flex justify-between items-center mb-6">
     <div class="flex items-center gap-2.5">
@@ -14,7 +14,7 @@
     @for (item of items(); track item.name) {
       <div class="bg-slate-900/40 border border-slate-800/40 rounded-xl px-4 py-3 flex justify-between items-center transition-colors hover:bg-slate-900/60">
         <span class="text-sm font-medium text-slate-300">{{ item.name }}</span>
-        
+
         <div class="flex items-center gap-2">
           <span class="text-xs font-semibold"
                 [ngClass]="{
