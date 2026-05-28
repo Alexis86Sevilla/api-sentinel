@@ -1,7 +1,7 @@
 <div class="min-h-screen w-full p-6 md:p-10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
   <div class="flex flex-col gap-4 justify-center items-center mb-8">
     <div class="flex items-center gap-2">
-      <img src="/icons/shield.svg" alt="Shield Icon" class="w-12 h-12 text-cyan-400">
+      <img src="icons/shield.svg" alt="Shield Icon" class="w-12 h-12 text-cyan-400">
       <h1 class="text-2xl md:text-4xl text-center font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent p-1">
         Analizador de Seguridad Web
       </h1>
@@ -49,11 +49,11 @@
     <app-security-score [score]="overallScore()"></app-security-score>
 
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <app-security-card @fadeSlideIn [report]="headersReport()!" title="Headers de Seguridad" style="--animation-delay: 0ms"></app-security-card>
-      <app-security-card @fadeSlideIn [report]="sslReport()!" title="SSL/TLS" style="--animation-delay: 100ms"></app-security-card>
-      <app-security-card @fadeSlideIn [report]="cookiesReport()!" title="Cookies" style="--animation-delay: 200ms"></app-security-card>
-      <app-security-card @fadeSlideIn [report]="vulnerabilitiesReport()!" title="Vulnerabilidades" style="--animation-delay: 300ms"></app-security-card>
-      <app-security-card @fadeSlideIn [report]="serverConfigReport()!" title="Configuración del Servidor" style="--animation-delay: 400ms"></app-security-card>
+      <app-security-card [report]="headersReport()!" title="Headers de Seguridad" style="--animation-delay: 0ms"></app-security-card>
+      <app-security-card [report]="sslReport()!" title="SSL/TLS" style="--animation-delay: 100ms"></app-security-card>
+      <app-security-card [report]="cookiesReport()!" title="Cookies" style="--animation-delay: 200ms"></app-security-card>
+      <app-security-card [report]="vulnerabilitiesReport()!" title="Vulnerabilidades" style="--animation-delay: 300ms"></app-security-card>
+      <app-security-card [report]="serverConfigReport()!" title="Configuración del Servidor" style="--animation-delay: 400ms"></app-security-card>
     </div>
   }
 </div>

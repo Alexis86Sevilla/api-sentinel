@@ -2,7 +2,7 @@
      [ngClass]="[theme().border, theme().bg]">
   <div class="flex justify-between items-center mb-6">
     <div class="flex items-center gap-2.5">
-      <img [src]="'/icons/' + theme().type + '.svg'" alt="status icon" class="w-6 h-6">
+      <img [src]="'icons/' + theme().type + '.svg'" alt="status icon" class="w-6 h-6">
       <h3 class="text-lg font-bold text-white leading-none">{{ title() }}</h3>
     </div>
      <span class="text-2xl font-extrabold" [ngClass]="theme().scoreColor">
@@ -25,7 +25,7 @@
             {{ item.value }}
           </span>
 
-          <img [src]="'/icons/' + item.status + '.svg'" alt="status icon" class="w-4 h-4 shrink-0">
+          <img [src]="'icons/' + item.status + '.svg'" alt="status icon" class="w-4 h-4 shrink-0">
         </div>
 
         <!-- Tooltip -->
