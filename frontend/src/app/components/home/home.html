@@ -27,6 +27,10 @@ rounded-l-lg px-4 py-2 bg-slate-800 text-white flex-1">
 
   </div>
 
+  @if (hasResults()) {
+    <app-security-score [score]="overallScore()"></app-security-score>
+  }
+
   <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
     @if (headersReport(); as report) {
       <app-security-card [report]="report" title="Headers de Seguridad"></app-security-card>
