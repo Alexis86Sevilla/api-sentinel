@@ -1,0 +1,33 @@
+<div class="w-full max-w-4xl mx-auto mb-8">
+      <div class="backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8 shadow-xl"
+           [class.bg-emerald-950/20]="isExcellent()"
+           [class.bg-blue-950/20]="isGood()"
+           [class.bg-amber-950/20]="isRegular()"
+           [class.bg-rose-950/20]="isPoor()">
+
+        <h2 class="text-center text-xl font-semibold text-slate-300 mb-4">
+          Puntuación General
+        </h2>
+
+        <div class="flex items-baseline justify-center gap-1 mb-4">
+          <span class="text-6xl font-bold"
+                [class.text-emerald-400]="isExcellent()"
+                [class.text-blue-400]="isGood()"
+                [class.text-amber-400]="isRegular()"
+                [class.text-rose-400]="isPoor()">
+            {{ score() }}
+          </span>
+          <span class="text-2xl text-slate-500">/100</span>
+        </div>
+
+        <p class="text-center text-lg"
+           [class.text-emerald-300]="isExcellent()"
+           [class.text-blue-300]="isGood()"
+           [class.text-amber-300]="isRegular()"
+           [class.text-rose-300]="isPoor()">
+          {{ ratingText() }}
+        </p>
+
+      </div>
+</div>
+
