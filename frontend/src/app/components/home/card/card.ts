@@ -1,6 +1,7 @@
 import { Component, input, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SecurityCardData } from '../../../models/security-report';
+import { SecurityTooltips } from '../../../data/security-tooltips';
 
 @Component({
   selector: 'app-security-card',
@@ -42,6 +43,7 @@ export class SecurityCard {
     }
 
     return report.items.map(item => ({
+      key: item.key,
       name: item.label,
       value: item.value,
       status: this.mapStatus(item.status),
@@ -53,4 +55,8 @@ export class SecurityCard {
     const key = scoreValue >= 80 ? 'success' : scoreValue >= 50 ? 'warning' : 'error';
     return this.THEMES[key];
   });
+
+  getTooltip(key: string): { title: string; description: string; fix: string } | null {
+    return SecurityTooltips[key] || null;
+  }
 }

@@ -12,7 +12,7 @@
 
   <div class="flex flex-col gap-3">
     @for (item of items(); track item.name) {
-      <div class="bg-slate-900/40 border border-slate-800/40 rounded-xl px-4 py-3 flex justify-between items-center transition-colors hover:bg-slate-900/60">
+      <div class="group relative bg-slate-900/40 border border-slate-800/40 rounded-xl px-4 py-3 flex justify-between items-center transition-colors hover:bg-slate-900/60 cursor-help">
         <span class="text-sm font-medium text-slate-300">{{ item.name }}</span>
 
         <div class="flex items-center gap-2">
@@ -27,6 +27,18 @@
 
           <img [src]="'/icons/' + item.status + '.svg'" alt="status icon" class="w-4 h-4 shrink-0">
         </div>
+
+        <!-- Tooltip -->
+        @if (getTooltip(item.key)) {
+          <div class="absolute left-0 right-0 bottom-full mb-2 p-3 bg-slate-800 border border-slate-600 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+            <div class="text-xs">
+              <p class="font-semibold text-cyan-400 mb-1">{{ getTooltip(item.key)?.title }}</p>
+              <p class="text-slate-300 mb-2">{{ getTooltip(item.key)?.description }}</p>
+              <p class="text-emerald-400">💡 {{ getTooltip(item.key)?.fix }}</p>
+            </div>
+            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800 border-r border-b border-slate-600"></div>
+          </div>
+        }
       </div>
     }
   </div>
