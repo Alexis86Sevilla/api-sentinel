@@ -1,7 +1,11 @@
-export interface SecurityReport {
-    targetUrl: string;
-    timestamp: string;
-    headers: Record<string, string>;
-    issues: string[];
-    score: number;
+export interface SecurityCardData {
+  score: number;
+  items: SecurityItem[];
+}
+
+export interface SecurityItem {
+  key: string;
+  label: string;
+  value: string;
+  status: string;
 }
