@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ApiUrlAudit } from '../../services/api-url-audit';
 import { SecurityCard } from './card/card';
 import { SecurityScore } from './security-score/security-score';
@@ -8,6 +8,7 @@ import { LoadingSpinner } from './loading-spinner/loading-spinner';
   selector: 'app-home',
   imports: [SecurityCard, SecurityScore, LoadingSpinner],
   templateUrl: './home.html',
+  styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
@@ -19,6 +20,24 @@ export class Home {
   protected vulnerabilitiesReport = this.apiService.vulnerabilitiesReport;
   protected serverConfigReport = this.apiService.serverConfigReport;
   protected isLoading = this.apiService.isLoading;
+
+  // Input validation
+  inputUrl = signal('');
+  inputTouched = signal(false);
+
+  private urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
+
+  isValidUrl = computed(() => {
+    const url = this.inputUrl().trim();
+    return url.length > 0 && this.urlPattern.test(url);
+  });
+
+  showValidation = computed(() => this.inputTouched() && this.inputUrl().length > 0);
+
+  inputClass = computed(() => {
+    if (!this.showValidation()) return '';
+    return this.isValidUrl() ? 'valid' : 'invalid';
+  });
 
   allReportsReady = computed(() => {
     return !this.isLoading() &&
@@ -44,8 +63,15 @@ export class Home {
     return Math.round(sum / reports.length);
   });
 
+  onInputChange(value: string): void {
+    this.inputUrl.set(value);
+    if (!this.inputTouched()) {
+      this.inputTouched.set(true);
+    }
+  }
+
   onSearchByUrl(url: string): void {
-    if (!url.trim()) return;
+    if (!url.trim() || !this.isValidUrl()) return;
     this.apiService.searchAll(url.trim());
   }
 }
