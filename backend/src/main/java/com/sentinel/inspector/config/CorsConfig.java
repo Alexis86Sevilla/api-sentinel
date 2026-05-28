@@ -7,9 +7,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**") // Ajusta esto a la ruta base de tus endpoints
+        registry.addMapping("/api/**")
                 .allowedOrigins(
-                        "http://localhost:4200", 
+                        "http://localhost:4200",
                         "https://tu-proyecto.pages.dev"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")

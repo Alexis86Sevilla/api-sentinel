@@ -1,9 +1,9 @@
 package com.sentinel.inspector.audit;
 
-import com.sentinel.inspector.audit.adapter.HttpHeaderScannerAdapter;
-import com.sentinel.inspector.audit.domain.AuditHeadersService;
-import com.sentinel.inspector.audit.domain.AuditReport;
-import com.sentinel.inspector.audit.domain.ports.HeaderScanner;
+import com.sentinel.inspector.audit.application.AuditHeadersService;
+import com.sentinel.inspector.audit.domain.model.SecurityAuditResult;
+import com.sentinel.inspector.audit.domain.model.SecurityItem;
+import com.sentinel.inspector.audit.infrastructure.adapter.HttpHeaderScannerAdapter;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterEach;
@@ -11,20 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class HeaderAuditIntegrationTest {
@@ -37,8 +28,8 @@ class HeaderAuditIntegrationTest {
     void setUp() throws IOException {
         mockWebServer = new MockWebServer();
         mockWebServer.start();
-        httpHeaderScannerAdapter = new HttpHeaderScannerAdapter(); // Use real adapter
-        auditHeadersService = new AuditHeadersService(httpHeaderScannerAdapter); // Inject real adapter
+        httpHeaderScannerAdapter = new HttpHeaderScannerAdapter();
+        auditHeadersService = new AuditHeadersService(httpHeaderScannerAdapter);
     }
 
     @AfterEach
@@ -49,73 +40,74 @@ class HeaderAuditIntegrationTest {
     @Test
     @DisplayName("Should pass audit for headers with valid security configurations")
     void shouldPassAuditWithValidSecurityHeaders() {
-        // Arrange
         String mockUrl = mockWebServer.url("/").toString();
-        URI targetUri = URI.create(mockUrl);
 
         mockWebServer.enqueue(new MockResponse()
                 .addHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
                 .addHeader("Content-Security-Policy", "default-src 'self'")
                 .addHeader("X-Frame-Options", "DENY")
                 .addHeader("X-Content-Type-Options", "nosniff")
+                .addHeader("Referrer-Policy", "no-referrer")
                 .setResponseCode(200));
 
-        // Act
-        AuditReport report = auditHeadersService.performAudit(mockUrl);
+        SecurityAuditResult report = auditHeadersService.performAudit(mockUrl);
 
-        // Assert
         assertNotNull(report);
-        assertTrue(report.issues().isEmpty(), "No issues should be reported for valid headers.");
         assertEquals(100, report.score(), "Score should be 100 for valid headers.");
+        assertFalse(report.items().isEmpty(), "Items should not be empty");
+
+        List<SecurityItem> items = report.items();
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("strict-transport-security") && item.status().equals("success")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("content-security-policy") && item.status().equals("success")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("x-frame-options") && item.status().equals("success")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("x-content-type-options") && item.status().equals("success")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("referrer-policy") && item.status().equals("success")));
     }
 
     @Test
     @DisplayName("Should report issues for missing security headers")
     void shouldReportIssuesForMissingSecurityHeaders() {
-        // Arrange
         String mockUrl = mockWebServer.url("/").toString();
-        URI targetUri = URI.create(mockUrl);
 
         mockWebServer.enqueue(new MockResponse()
-                .setResponseCode(200)); // No security headers
+                .setResponseCode(200));
 
-        // Act
-        AuditReport report = auditHeadersService.performAudit(mockUrl);
+        SecurityAuditResult report = auditHeadersService.performAudit(mockUrl);
 
-        // Assert
         assertNotNull(report);
-        assertFalse(report.issues().isEmpty(), "Issues should be reported for missing headers.");
-        assertTrue(report.issues().contains("Missing Strict-Transport-Security header."), "Should report missing HSTS.");
-        assertTrue(report.issues().contains("Missing Content-Security-Policy header."), "Should report missing CSP.");
-        assertTrue(report.issues().contains("Missing X-Frame-Options header."), "Should report missing X-Frame-Options.");
-        assertTrue(report.issues().contains("Missing X-Content-Type-Options header."), "Should report missing X-Content-Type-Options.");
         assertTrue(report.score() < 100, "Score should be reduced for missing headers.");
+
+        List<SecurityItem> items = report.items();
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("strict-transport-security") && item.status().equals("error")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("content-security-policy") && item.status().equals("error")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("x-frame-options") && item.status().equals("error")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("x-content-type-options") && item.status().equals("error")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("referrer-policy") && item.status().equals("warning")));
     }
 
     @Test
     @DisplayName("Should report issues for invalid security header values")
     void shouldReportIssuesForInvalidSecurityHeaderValues() {
-        // Arrange
         String mockUrl = mockWebServer.url("/").toString();
-        URI targetUri = URI.create(mockUrl);
 
         mockWebServer.enqueue(new MockResponse()
-                .addHeader("Strict-Transport-Security", "max-age=1000") // Too short
-                .addHeader("Content-Security-Policy", "default-src 'self' 'unsafe-inline'") // Unsafe CSP
-                .addHeader("X-Frame-Options", "ALLOW-FROM http://bad.com") // Invalid for modern browsers
-                .addHeader("X-Content-Type-Options", "sniff") // Invalid
+                .addHeader("Strict-Transport-Security", "max-age=1000")
+                .addHeader("Content-Security-Policy", "default-src 'self' 'unsafe-inline'")
+                .addHeader("X-Frame-Options", "ALLOW-FROM http://bad.com")
+                .addHeader("X-Content-Type-Options", "sniff")
+                .addHeader("Referrer-Policy", "unsafe-url")
                 .setResponseCode(200));
 
-        // Act
-        AuditReport report = auditHeadersService.performAudit(mockUrl);
+        SecurityAuditResult report = auditHeadersService.performAudit(mockUrl);
 
-        // Assert
         assertNotNull(report);
-        assertFalse(report.issues().isEmpty(), "Issues should be reported for invalid header values.");
-        assertTrue(report.issues().contains("HSTS header has too short max-age."), "Should report invalid HSTS max-age.");
-        assertTrue(report.issues().contains("Content-Security-Policy header contains 'unsafe-inline' or 'unsafe-eval'."), "Should report unsafe CSP.");
-        assertTrue(report.issues().contains("X-Frame-Options header has invalid value."), "Should report invalid X-Frame-Options.");
-        assertTrue(report.issues().contains("X-Content-Type-Options header has invalid value."), "Should report invalid X-Content-Type-Options.");
         assertTrue(report.score() < 100, "Score should be reduced for invalid header values.");
+
+        List<SecurityItem> items = report.items();
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("strict-transport-security") && item.status().equals("warning")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("content-security-policy") && item.status().equals("warning")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("x-frame-options") && item.status().equals("error")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("x-content-type-options") && item.status().equals("error")));
+        assertTrue(items.stream().anyMatch(item -> item.key().equals("referrer-policy") && item.status().equals("warning")));
     }
 }
