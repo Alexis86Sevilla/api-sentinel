@@ -13,6 +13,7 @@ import { LoadingSpinner } from './loading-spinner/loading-spinner';
 })
 export class Home {
   private apiService = inject(ApiUrlAudit);
+  private urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
 
   protected headersReport = this.apiService.headersReport;
   protected sslReport = this.apiService.sslReport;
@@ -21,11 +22,8 @@ export class Home {
   protected serverConfigReport = this.apiService.serverConfigReport;
   protected isLoading = this.apiService.isLoading;
 
-  // Input validation
   inputUrl = signal('');
   inputTouched = signal(false);
-
-  private urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
 
   isValidUrl = computed(() => {
     const url = this.inputUrl().trim();
