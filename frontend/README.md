@@ -1,59 +1,96 @@
-# Frontend
+# API Sentinel
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+Frontend Angular 21 para el analizador de seguridad web. Interfaz moderna y responsive para auditar la seguridad de cualquier sitio web.
 
-## Development server
+## Demo
 
-To start a local development server, run:
+![Security Analyzer](screenshot.png)
+
+## Características
+
+- 🔒 Análisis de seguridad completo en segundos
+- 🌍 Soporte multi-idioma (Español/Inglés)
+- 📊 Puntuación general y desglose por categorías
+- 🎨 Interfaz moderna con tema oscuro
+- 📱 Totalmente responsive
+- ⚡ Carga simultánea de todos los análisis
+
+## Tecnologías
+
+- Angular 21
+- TypeScript
+- Tailwind CSS
+- Vitest (testing)
+
+## Estructura
+
+```
+src/app/
+├── components/
+│   ├── home/                 # Página principal
+│   │   ├── card/            # Cards de resultados
+│   │   ├── security-score/  # Puntuación general
+│   │   └── loading-spinner/ # Indicador de carga
+│   ├── footer/              # Footer con info del autor
+│   └── language-selector/   # Selector de idioma
+├── services/
+│   ├── api-url-audit.ts     # Servicio de API
+│   └── i18n.service.ts      # Internacionalización
+└── assets/
+    └── i18n/                # Archivos de traducción
+```
+
+## Instalación
+
+```bash
+cd frontend
+npm install
+```
+
+## Desarrollo
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Abrir `http://localhost:4200`
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Build
 
 ```bash
-ng generate component component-name
+ng build --configuration production
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Tests
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+## Características Implementadas
 
-For end-to-end (e2e) testing, run:
+### Categorías de Análisis
 
-```bash
-ng e2e
-```
+1. **Headers de Seguridad** - HSTS, CSP, X-Frame-Options, etc.
+2. **SSL/TLS** - Certificado, protocolo, expiración, cifrado
+3. **Cookies** - Secure, HttpOnly, SameSite
+4. **Vulnerabilidades** - Clickjacking, XSS, SQL Injection
+5. **Configuración del Servidor** - HTTPS, compresión, etc.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Internacionalización
 
-## Additional Resources
+Las traducciones están en `src/assets/i18n/`:
+- `es.json` - Español
+- `en.json` - Inglés
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### UI/UX
+
+- Tema oscuro con gradientes
+- Animaciones suaves
+- Tooltips informativos
+- Estados de carga
+- Validación de URL en tiempo real
+
+## Licencia
+
+MIT
