@@ -36,7 +36,7 @@ class SslAuditIntegrationTest {
             .findFirst()
             .orElseThrow();
         assertEquals("valid", certificate.status());
-        assertTrue(certificate.value().startsWith("Válido"), "Certificate should be valid");
+        assertTrue(certificate.value().startsWith("ssl.validWithAlgorithm:"), "Certificate should be valid with translation key");
         assertTrue(certificate.value().contains("SHA"), "Should include hash algorithm");
 
         SecurityItem protocol = result.items().stream()
@@ -51,7 +51,7 @@ class SslAuditIntegrationTest {
             .findFirst()
             .orElseThrow();
         assertTrue(expiration.status().equals("valid") || expiration.status().equals("warning"));
-        assertTrue(expiration.value().contains("días"), "Should show days until expiration");
+        assertTrue(expiration.value().startsWith("ssl.daysUntilExpiry:"), "Should use translation key for days until expiration");
 
         SecurityItem cipher = result.items().stream()
             .filter(i -> i.key().equals("cipher"))
@@ -107,6 +107,6 @@ class SslAuditIntegrationTest {
             .findFirst()
             .orElseThrow();
         assertEquals("error", certificate.status());
-        assertTrue(certificate.value().startsWith("Error:"), "Should indicate error");
+        assertTrue(certificate.value().startsWith("ssl.error:"), "Should use translation key for error");
     }
 }

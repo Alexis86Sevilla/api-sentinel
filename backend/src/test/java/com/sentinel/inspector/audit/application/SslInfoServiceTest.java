@@ -49,7 +49,7 @@ public class SslInfoServiceTest {
             .findFirst()
             .orElseThrow();
         assertEquals("valid", certificate.status());
-        assertTrue(certificate.value().contains("Válido"));
+        assertTrue(certificate.value().startsWith("ssl.validWithAlgorithm:"));
     }
 
     @Test
@@ -89,6 +89,6 @@ public class SslInfoServiceTest {
             .findFirst()
             .orElseThrow();
         assertEquals("error", certificate.status());
-        assertTrue(certificate.value().startsWith("Error:"));
+        assertTrue(certificate.value().startsWith("ssl.error:"));
     }
 }
