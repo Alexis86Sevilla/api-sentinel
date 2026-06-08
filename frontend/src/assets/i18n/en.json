@@ -1,0 +1,241 @@
+{
+  "app": {
+    "title": "Web Security Analyzer",
+    "subtitle": "Analyze the security of any website in seconds"
+  },
+  "search": {
+    "placeholder": "https://www.example.com",
+    "button": "Analyze",
+    "validating": "Validating...",
+    "validation": {
+      "valid": "✓ Valid URL",
+      "invalid": "✗ Enter a valid URL (e.g.: https://example.com)"
+    }
+  },
+  "loading": {
+    "text": "Analyzing security..."
+  },
+  "overallScore": {
+    "title": "Overall Score",
+    "rating": {
+      "excellent": "Excellent security level",
+      "good": "Good security level", 
+      "regular": "Regular security level",
+      "poor": "Needs urgent improvements"
+    }
+  },
+  "cards": {
+    "headers": "Security Headers",
+    "ssl": "SSL/TLS",
+    "cookies": "Cookies",
+    "vulnerabilities": "Vulnerabilities",
+    "serverConfig": "Server Configuration"
+  },
+  "status": {
+    "valid": "Valid",
+    "success": "Success",
+    "warning": "Warning",
+    "error": "Error",
+    "invalid": "Invalid"
+  },
+  "header": {
+    "configured": "Configured",
+    "notConfigured": "Not configured",
+    "hsts": {
+      "lowMaxAge": "max-age too low",
+      "invalidMaxAge": "Invalid max-age value",
+      "missingMaxAge": "Missing max-age directive"
+    },
+    "csp": {
+      "unsafeDirectives": "Contains unsafe directives"
+    },
+    "xframe": {
+      "invalidValue": "Invalid value: '{{value}}'. Expected 'DENY' or 'SAMEORIGIN'."
+    },
+    "xcto": {
+      "invalidValue": "Invalid value: '{{value}}'. Expected 'nosniff'."
+    },
+    "referrer": {
+      "unsafeValue": "Not recommended value: '{{value}}'."
+    }
+  },
+  "server": {
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "active": "Active",
+    "inactive": "Inactive",
+    "notVerifiable": "Not verifiable",
+    "notApplicable": "Not applicable (already HTTPS)",
+    "sslError": "SSL Error",
+    "redirectNoHttps": "Redirect without HTTPS"
+  },
+  "vuln": {
+    "notVerifiable": "Not verifiable",
+    "exposed": "Exposed",
+    "partial": "Partial",
+    "notExposed": "Not exposed",
+    "protected": "Protected",
+    "protectedMultiple": "Protected (multiple)",
+    "partialProtection": "Partial protection",
+    "notProtected": "Not protected",
+    "basicProtection": "Basic protection",
+    "errorsExposed": "Errors exposed",
+    "notDetected": "Not detected",
+    "foundCount": "{{value}} found"
+  },
+  "ssl": {
+    "validWithAlgorithm": "Valid ({{value}})",
+    "daysUntilExpiry": "{{value}} days",
+    "error": "Error: {{value}}",
+    "notAvailable": "Not available"
+  },
+  "cookie": {
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "noCookies": "No cookies",
+    "detectedCount": "{{value}} detected",
+    "error": "Error",
+    "notAvailable": "Not available",
+    "strict": "Strict",
+    "laxMixed": "Lax/Mixed",
+    "noneInsecure": "None (insecure)",
+    "missingAttribute": "Missing attribute",
+    "lax": "Lax"
+  },
+  "label": {
+    "certificate": "SSL Certificate",
+    "protocol": "TLS Protocol",
+    "expiration": "Expiration",
+    "cipher": "Cipher",
+    "secure": "Secure Flag",
+    "httponly": "HttpOnly",
+    "samesite": "SameSite",
+    "thirdparty": "Third-party Cookies",
+    "server-version": "Server Version",
+    "clickjacking": "Clickjacking",
+    "xss": "XSS Protection",
+    "sql-injection": "SQL Injection",
+    "dependencies": "Outdated Dependencies",
+    "https": "HTTPS",
+    "redirect": "HTTP Redirect",
+    "compression": "GZIP Compression",
+    "directory-listing": "Directory Listing"
+  },
+  "tooltips": {
+    "hsts": {
+      "title": "HSTS (HTTP Strict Transport Security)",
+      "description": "Forces the browser to always use HTTPS, preventing downgrade attacks.",
+      "fix": "Add header: Strict-Transport-Security: max-age=31536000; includeSubDomains"
+    },
+    "csp": {
+      "title": "Content Security Policy",
+      "description": "Controls which resources the page can load, preventing XSS attacks.",
+      "fix": "Configure CSP with secure directives without 'unsafe-inline'"
+    },
+    "xFrame": {
+      "title": "X-Frame-Options",
+      "description": "Prevents your site from being embedded in iframes (clickjacking).",
+      "fix": "Add: X-Frame-Options: DENY or SAMEORIGIN"
+    },
+    "xContentType": {
+      "title": "X-Content-Type-Options",
+      "description": "Prevents the browser from 'guessing' the content type.",
+      "fix": "Add: X-Content-Type-Options: nosniff"
+    },
+    "referrer": {
+      "title": "Referrer Policy",
+      "description": "Controls what information is sent when navigating to other sites.",
+      "fix": "Add: Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    "certificate": {
+      "title": "SSL Certificate",
+      "description": "Verifies server identity and encrypts communication.",
+      "fix": "Use certificates from trusted providers (Let's Encrypt, etc.)"
+    },
+    "protocol": {
+      "title": "TLS Protocol",
+      "description": "The version of the security protocol being used.",
+      "fix": "Configure TLS 1.2 or higher, disable old versions"
+    },
+    "expiration": {
+      "title": "Certificate Expiration",
+      "description": "Time remaining before the certificate becomes invalid.",
+      "fix": "Renew the certificate before it expires"
+    },
+    "cipher": {
+      "title": "Cipher",
+      "description": "Algorithm used to encrypt data.",
+      "fix": "Use strong ciphers like AES-256-GCM or ChaCha20-Poly1305"
+    },
+    "secure": {
+      "title": "Secure Flag",
+      "description": "Cookie is only sent over HTTPS connections.",
+      "fix": "Add Secure attribute to all cookies"
+    },
+    "httpOnly": {
+      "title": "HttpOnly Flag",
+      "description": "Cookie is not accessible from JavaScript (protects against XSS).",
+      "fix": "Add HttpOnly attribute to session cookies"
+    },
+    "sameSite": {
+      "title": "SameSite Attribute",
+      "description": "Controls whether the cookie is sent in cross-site requests.",
+      "fix": "Use SameSite=Strict or SameSite=Lax for session cookies"
+    },
+    "thirdParty": {
+      "title": "Third-party Cookies",
+      "description": "Cookies set by domains different from the page.",
+      "fix": "Minimize use of third-party cookies or get explicit consent"
+    },
+    "serverVersion": {
+      "title": "Server Version",
+      "description": "Exposing server version allows attackers to find known vulnerabilities.",
+      "fix": "Hide server version in HTTP headers"
+    },
+    "clickjacking": {
+      "title": "Clickjacking Protection",
+      "description": "Prevents your site from being embedded in malicious iframes.",
+      "fix": "Implement X-Frame-Options or CSP frame-ancestors"
+    },
+    "xss": {
+      "title": "XSS Protection",
+      "description": "Measures against Cross-Site Scripting attacks.",
+      "fix": "Implement CSP, sanitize inputs, use HttpOnly cookies"
+    },
+    "sqlInjection": {
+      "title": "SQL Injection Protection",
+      "description": "Prevention of SQL code injection.",
+      "fix": "Use parameterized queries, ORMs, validate inputs"
+    },
+    "dependencies": {
+      "title": "Outdated Dependencies",
+      "description": "Libraries with known vulnerabilities.",
+      "fix": "Keep dependencies updated with tools like Dependabot"
+    },
+    "https": {
+      "title": "HTTPS Enabled",
+      "description": "Site is available through secure connection.",
+      "fix": "Configure SSL/TLS certificates for your domain"
+    },
+    "redirect": {
+      "title": "HTTP to HTTPS Redirect",
+      "description": "Automatically redirects HTTP traffic to HTTPS.",
+      "fix": "Configure 301 redirects from HTTP to HTTPS"
+    },
+    "compression": {
+      "title": "GZIP Compression",
+      "description": "Reduces response size to improve speed.",
+      "fix": "Enable gzip/deflate compression on the server"
+    },
+    "directoryListing": {
+      "title": "Directory Listing",
+      "description": "If enabled, shows folder contents.",
+      "fix": "Disable directory listing in server configuration"
+    }
+  },
+  "language": {
+    "select": "Language",
+    "es": "Spanish",
+    "en": "English"
+  }
+}

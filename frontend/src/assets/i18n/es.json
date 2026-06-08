@@ -1,0 +1,241 @@
+{
+  "app": {
+    "title": "Analizador de Seguridad Web",
+    "subtitle": "Analiza la seguridad de cualquier sitio web en segundos"
+  },
+  "search": {
+    "placeholder": "https://www.ejemplo.com",
+    "button": "Analizar",
+    "validating": "Validando...",
+    "validation": {
+      "valid": "✓ URL válida",
+      "invalid": "✗ Introduce una URL válida (ej: https://ejemplo.com)"
+    }
+  },
+  "loading": {
+    "text": "Analizando seguridad..."
+  },
+  "overallScore": {
+    "title": "Puntuación General",
+    "rating": {
+      "excellent": "Excelente nivel de seguridad",
+      "good": "Buen nivel de seguridad", 
+      "regular": "Nivel de seguridad regular",
+      "poor": "Necesita mejoras urgentes"
+    }
+  },
+  "cards": {
+    "headers": "Headers de Seguridad",
+    "ssl": "SSL/TLS",
+    "cookies": "Cookies",
+    "vulnerabilities": "Vulnerabilidades",
+    "serverConfig": "Configuración del Servidor"
+  },
+  "status": {
+    "valid": "Válido",
+    "success": "Éxito",
+    "warning": "Advertencia",
+    "error": "Error",
+    "invalid": "Inválido"
+  },
+  "header": {
+    "configured": "Configurado",
+    "notConfigured": "No configurado",
+    "hsts": {
+      "lowMaxAge": "max-age muy bajo",
+      "invalidMaxAge": "Valor de max-age inválido",
+      "missingMaxAge": "Falta la directiva max-age"
+    },
+    "csp": {
+      "unsafeDirectives": "Contiene directivas inseguras"
+    },
+    "xframe": {
+      "invalidValue": "Valor inválido: '{{value}}'. Se espera 'DENY' o 'SAMEORIGIN'."
+    },
+    "xcto": {
+      "invalidValue": "Valor inválido: '{{value}}'. Se espera 'nosniff'."
+    },
+    "referrer": {
+      "unsafeValue": "Valor no recomendado: '{{value}}'."
+    }
+  },
+  "server": {
+    "enabled": "Habilitado",
+    "disabled": "Deshabilitado",
+    "active": "Activa",
+    "inactive": "Inactiva",
+    "notVerifiable": "No verificable",
+    "notApplicable": "No aplica (ya es HTTPS)",
+    "sslError": "Error SSL",
+    "redirectNoHttps": "Redirección sin HTTPS"
+  },
+  "vuln": {
+    "notVerifiable": "No verificable",
+    "exposed": "Expuesta",
+    "partial": "Parcial",
+    "notExposed": "No expuesta",
+    "protected": "Protegido",
+    "protectedMultiple": "Protegido (múltiple)",
+    "partialProtection": "Protección parcial",
+    "notProtected": "No protegido",
+    "basicProtection": "Protección básica",
+    "errorsExposed": "Errores expuestos",
+    "notDetected": "No detectado",
+    "foundCount": "{{value}} encontradas"
+  },
+  "ssl": {
+    "validWithAlgorithm": "Válido ({{value}})",
+    "daysUntilExpiry": "{{value}} días",
+    "error": "Error: {{value}}",
+    "notAvailable": "No disponible"
+  },
+  "cookie": {
+    "enabled": "Habilitado",
+    "disabled": "Deshabilitado",
+    "noCookies": "No hay cookies",
+    "detectedCount": "{{value}} detectadas",
+    "error": "Error",
+    "notAvailable": "No disponible",
+    "strict": "Strict",
+    "laxMixed": "Lax/Mixed",
+    "noneInsecure": "None (inseguro)",
+    "missingAttribute": "Falta atributo",
+    "lax": "Lax"
+  },
+  "label": {
+    "certificate": "Certificado SSL",
+    "protocol": "Protocolo TLS",
+    "expiration": "Expiración",
+    "cipher": "Cifrado",
+    "secure": "Secure Flag",
+    "httponly": "HttpOnly",
+    "samesite": "SameSite",
+    "thirdparty": "Cookies de terceros",
+    "server-version": "Versión de servidor",
+    "clickjacking": "Clickjacking",
+    "xss": "XSS Protection",
+    "sql-injection": "SQL Injection",
+    "dependencies": "Dependencias obsoletas",
+    "https": "HTTPS",
+    "redirect": "Redirección HTTP",
+    "compression": "Compresión GZIP",
+    "directory-listing": "Listado de directorios"
+  },
+  "tooltips": {
+    "hsts": {
+      "title": "HSTS (HTTP Strict Transport Security)",
+      "description": "Fuerza al navegador a usar siempre HTTPS, evitando ataques de downgrade.",
+      "fix": "Agrega el header: Strict-Transport-Security: max-age=31536000; includeSubDomains"
+    },
+    "csp": {
+      "title": "Content Security Policy",
+      "description": "Controla qué recursos puede cargar la página, previniendo XSS.",
+      "fix": "Configura CSP con directivas seguras sin 'unsafe-inline'"
+    },
+    "xFrame": {
+      "title": "X-Frame-Options",
+      "description": "Previene que tu sitio sea embebido en iframes (clickjacking).",
+      "fix": "Agrega: X-Frame-Options: DENY o SAMEORIGIN"
+    },
+    "xContentType": {
+      "title": "X-Content-Type-Options",
+      "description": "Evita que el navegador 'adivine' el tipo de contenido.",
+      "fix": "Agrega: X-Content-Type-Options: nosniff"
+    },
+    "referrer": {
+      "title": "Referrer Policy",
+      "description": "Controla qué información se envía al navegar a otros sitios.",
+      "fix": "Agrega: Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    "certificate": {
+      "title": "Certificado SSL",
+      "description": "Verifica la identidad del servidor y encripta la comunicación.",
+      "fix": "Usa certificados de proveedores confiables (Let's Encrypt, etc.)"
+    },
+    "protocol": {
+      "title": "Protocolo TLS",
+      "description": "La versión del protocolo de seguridad utilizado.",
+      "fix": "Configura TLS 1.2 o superior, deshabilita versiones viejas"
+    },
+    "expiration": {
+      "title": "Expiración del Certificado",
+      "description": "Tiempo restante antes de que el certificado deje de ser válido.",
+      "fix": "Renueva el certificado antes de que expire"
+    },
+    "cipher": {
+      "title": "Cifrado",
+      "description": "Algoritmo utilizado para encriptar los datos.",
+      "fix": "Usa cifrados fuertes como AES-256-GCM o ChaCha20-Poly1305"
+    },
+    "secure": {
+      "title": "Secure Flag",
+      "description": "La cookie solo se envía por conexiones HTTPS.",
+      "fix": "Agrega el atributo Secure a todas las cookies"
+    },
+    "httpOnly": {
+      "title": "HttpOnly Flag",
+      "description": "La cookie no es accesible desde JavaScript (protege contra XSS).",
+      "fix": "Agrega el atributo HttpOnly a cookies de sesión"
+    },
+    "sameSite": {
+      "title": "SameSite Attribute",
+      "description": "Controla si la cookie se envía en solicitudes cross-site.",
+      "fix": "Usa SameSite=Strict o SameSite=Lax para cookies de sesión"
+    },
+    "thirdParty": {
+      "title": "Cookies de Terceros",
+      "description": "Cookies establecidas por dominios diferentes al de la página.",
+      "fix": "Minimiza el uso de cookies de terceros o consigue consentimiento explícito"
+    },
+    "serverVersion": {
+      "title": "Versión del Servidor",
+      "description": "Si se expone la versión del servidor, atacantes pueden buscar vulnerabilidades conocidas.",
+      "fix": "Oculta la versión del servidor en los headers HTTP"
+    },
+    "clickjacking": {
+      "title": "Protección contra Clickjacking",
+      "description": "Previene que tu sitio sea embebido en iframes maliciosos.",
+      "fix": "Implementa X-Frame-Options o CSP frame-ancestors"
+    },
+    "xss": {
+      "title": "Protección XSS",
+      "description": "Medidas contra ataques Cross-Site Scripting.",
+      "fix": "Implementa CSP, sanitiza inputs, usa HttpOnly cookies"
+    },
+    "sqlInjection": {
+      "title": "Protección SQL Injection",
+      "description": "Prevención de inyección de código SQL.",
+      "fix": "Usa consultas parametrizadas, ORMs, valida inputs"
+    },
+    "dependencies": {
+      "title": "Dependencias Obsoletas",
+      "description": "Librerías desactualizadas con vulnerabilidades conocidas.",
+      "fix": "Mantén dependencias actualizadas con herramientas como Dependabot"
+    },
+    "https": {
+      "title": "HTTPS Habilitado",
+      "description": "El sitio está disponible mediante conexión segura.",
+      "fix": "Configura certificados SSL/TLS para tu dominio"
+    },
+    "redirect": {
+      "title": "Redirección HTTP a HTTPS",
+      "description": "Redirige automáticamente tráfico HTTP a HTTPS.",
+      "fix": "Configura redirecciones 301 de HTTP a HTTPS"
+    },
+    "compression": {
+      "title": "Compresión GZIP",
+      "description": "Reduce el tamaño de las respuestas para mejorar velocidad.",
+      "fix": "Habilita compresión gzip/deflate en el servidor"
+    },
+    "directoryListing": {
+      "title": "Listado de Directorios",
+      "description": "Si está habilitado, muestra contenido de carpetas.",
+      "fix": "Deshabilita directory listing en la configuración del servidor"
+    }
+  },
+  "language": {
+    "select": "Idioma",
+    "es": "Español",
+    "en": "Inglés"
+  }
+}
