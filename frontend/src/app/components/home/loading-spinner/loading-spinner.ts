@@ -1,10 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { I18nService } from '../../../services/i18n.service';
 
 @Component({
   selector: 'app-loading-spinner',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './loading-spinner.html'
+  template: `
+    <div class="flex flex-col items-center justify-center py-12">
+      <div class="relative">
+        <div class="w-16 h-16 rounded-full border-4 border-slate-700 border-t-cyan-400 animate-spin"></div>
+        <div class="absolute top-2 left-2 w-12 h-12 rounded-full border-4 border-slate-800 border-t-blue-500 animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+        <div class="absolute top-5 left-5 w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 animate-pulse"></div>
+      </div>
+      <p class="mt-6 text-slate-400 text-sm font-medium animate-pulse">{{ i18n.t('loading.text') }}</p>
+    </div>
+  `
 })
-export class LoadingSpinner {}
+export class LoadingSpinner {
+  i18n = inject(I18nService);
+}
