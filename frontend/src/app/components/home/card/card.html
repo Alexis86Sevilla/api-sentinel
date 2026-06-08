@@ -28,7 +28,6 @@
           <img [src]="'icons/' + item.status + '.svg'" alt="status icon" class="w-4 h-4 shrink-0 mt-0.5">
         </div>
 
-        <!-- Tooltip -->
         @if (getTooltip(item.key)) {
           <div class="absolute left-0 right-0 bottom-full mb-2 p-3 bg-slate-800 border border-slate-600 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
             <div class="text-xs">

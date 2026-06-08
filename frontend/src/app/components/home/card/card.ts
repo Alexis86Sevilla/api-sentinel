@@ -51,7 +51,6 @@ export class SecurityCard {
     }));
   });
 
-  // Translation key prefixes used across all audit services
   private translationPrefixes = ['header.', 'server.', 'vuln.', 'ssl.', 'cookie.'];
 
   private isTranslationKey(value: string): boolean {
@@ -59,7 +58,6 @@ export class SecurityCard {
   }
 
   private translateLabel(label: string): string {
-    // If label is a translation key, translate it
     if (this.isTranslationKey(label)) {
       const translated = this.i18n.t(label);
       return translated !== label ? translated : label;
@@ -68,7 +66,6 @@ export class SecurityCard {
   }
 
   private translateValue(value: string): string {
-    // Handle parameterized translation keys (format: "key:param")
     if (this.isTranslationKey(value) && value.includes(':')) {
       const colonIndex = value.indexOf(':');
       const key = value.substring(0, colonIndex);
@@ -80,7 +77,6 @@ export class SecurityCard {
       return value;
     }
 
-    // Handle simple translation keys
     if (this.isTranslationKey(value)) {
       const translated = this.i18n.t(value);
       return translated !== value ? translated : value;
