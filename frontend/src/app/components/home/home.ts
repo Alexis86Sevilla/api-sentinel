@@ -1,19 +1,21 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ApiUrlAudit } from '../../services/api-url-audit';
+import { I18nService } from '../../services/i18n.service';
 import { SecurityCard } from './card/card';
 import { SecurityScore } from './security-score/security-score';
 import { LoadingSpinner } from './loading-spinner/loading-spinner';
+import { LanguageSelector } from '../language-selector/language-selector';
 
 @Component({
   selector: 'app-home',
-  imports: [SecurityCard, SecurityScore, LoadingSpinner],
+  imports: [SecurityCard, SecurityScore, LoadingSpinner, LanguageSelector],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
   private apiService = inject(ApiUrlAudit);
-  private urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+  protected i18n = inject(I18nService);
 
   protected headersReport = this.apiService.headersReport;
   protected sslReport = this.apiService.sslReport;
@@ -25,17 +27,14 @@ export class Home {
   inputUrl = signal('');
   inputTouched = signal(false);
 
+  private urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
+
   isValidUrl = computed(() => {
     const url = this.inputUrl().trim();
     return url.length > 0 && this.urlPattern.test(url);
   });
 
   showValidation = computed(() => this.inputTouched() && this.inputUrl().length > 0);
-
-  inputClass = computed(() => {
-    if (!this.showValidation()) return '';
-    return this.isValidUrl() ? 'valid' : 'invalid';
-  });
 
   allReportsReady = computed(() => {
     return !this.isLoading() &&

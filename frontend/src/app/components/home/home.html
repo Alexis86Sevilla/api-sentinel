@@ -1,13 +1,16 @@
-<div class="min-h-screen w-full p-6 md:p-10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-  <div class="flex flex-col gap-4 justify-center items-center mb-8">
-    <div class="flex items-center gap-2">
+<div class="min-h-[66dvh]  p-6 md:p-10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+  <div class="flex justify-end mb-6">
+    <app-language-selector></app-language-selector>
+  </div>
+  <div class="flex-1 flex flex-col gap-4 justify-start items-center mb-8">
+    <div class="flex flex-col md:flex-row items-center gap-2">
       <img src="icons/shield.svg" alt="Shield Icon" class="w-12 h-12 text-cyan-400">
       <h1 class="text-2xl md:text-4xl text-center font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent p-1">
-        Analizador de Seguridad Web
+        {{ i18n.t('app.title') }}
       </h1>
     </div>
     <h2 class="text-lg font-medium text-white/80 text-center">
-      Analiza la seguridad de cualquier sitio web en segundos
+      {{ i18n.t('app.subtitle') }}
     </h2>
   </div>
 
@@ -16,7 +19,7 @@
       <div class="flex">
         <input #urlInput
                type="text"
-               placeholder="https://www.ejemplo.com"
+               [placeholder]="i18n.t('search.placeholder')"
                [class.border-rose-500]="showValidation() && !isValidUrl()"
                [class.border-emerald-500]="showValidation() && isValidUrl()"
                [class.border-slate-700]="!showValidation()"
@@ -27,15 +30,15 @@
                 [disabled]="isLoading() || !isValidUrl()"
                 class="px-6 md:px-8 py-3 cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-600 rounded-r-xl font-semibold hover:from-cyan-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-lg hover:shadow-cyan-500/50 text-white">
           <img src="icons/search.svg" alt="Search Icon" class="w-5 h-5">
-          <span class="hidden md:inline">Analizar</span>
+          <span class="hidden md:inline">{{ i18n.t('search.button') }}</span>
         </button>
       </div>
       @if (showValidation()) {
         <span class="text-sm" [class.text-rose-400]="!isValidUrl()" [class.text-emerald-400]="isValidUrl()">
           @if (isValidUrl()) {
-            ✓ URL válida
+            {{ i18n.t('search.validation.valid') }}
           } @else {
-            ✗ Introduce una URL válida (ej: https://ejemplo.com)
+            {{ i18n.t('search.validation.invalid') }}
           }
         </span>
       }
@@ -45,15 +48,16 @@
   @if (isLoading()) {
     <app-loading-spinner></app-loading-spinner>
   }
+
   @if (allReportsReady()) {
     <app-security-score [score]="overallScore()"></app-security-score>
 
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <app-security-card [report]="headersReport()!" title="Headers de Seguridad" style="--animation-delay: 0ms"></app-security-card>
-      <app-security-card [report]="sslReport()!" title="SSL/TLS" style="--animation-delay: 100ms"></app-security-card>
-      <app-security-card [report]="cookiesReport()!" title="Cookies" style="--animation-delay: 200ms"></app-security-card>
-      <app-security-card [report]="vulnerabilitiesReport()!" title="Vulnerabilidades" style="--animation-delay: 300ms"></app-security-card>
-      <app-security-card [report]="serverConfigReport()!" title="Configuración del Servidor" style="--animation-delay: 400ms"></app-security-card>
+      <app-security-card [report]="headersReport()!" [title]="i18n.t('cards.headers')" style="--animation-delay: 0ms"></app-security-card>
+      <app-security-card [report]="sslReport()!" [title]="i18n.t('cards.ssl')" style="--animation-delay: 100ms"></app-security-card>
+      <app-security-card [report]="cookiesReport()!" [title]="i18n.t('cards.cookies')" style="--animation-delay: 200ms"></app-security-card>
+      <app-security-card [report]="vulnerabilitiesReport()!" [title]="i18n.t('cards.vulnerabilities')" style="--animation-delay: 300ms"></app-security-card>
+      <app-security-card [report]="serverConfigReport()!" [title]="i18n.t('cards.serverConfig')" style="--animation-delay: 400ms"></app-security-card>
     </div>
   }
 </div>
