@@ -74,12 +74,12 @@ public class AuditHeadersService {
     private HstsResult checkHSTSHeader(Map<String, String> headers) {
         String hstsHeaderValue = headers.get("strict-transport-security");
         String status = "success";
-        String value = "Configurado";
+        String value = "header.configured";
         int deduction = 0;
 
         if (hstsHeaderValue == null) {
             status = "error";
-            value = "No configurado";
+            value = "header.notConfigured";
             deduction = SCORE_MISSING_HSTS;
         } else {
             if (hstsHeaderValue.contains("max-age=")) {
@@ -91,17 +91,17 @@ public class AuditHeadersService {
                     long maxAge = Long.parseLong(maxAgeString);
                     if (maxAge < HSTS_MIN_MAX_AGE) {
                         status = "warning";
-                        value = "max-age bajo, debería ser al menos 1 año.";
+                        value = "header.hsts.lowMaxAge";
                         deduction = SCORE_HSTS_SHORT_MAX_AGE;
                     }
                 } catch (NumberFormatException e) {
                     status = "error";
-                    value = "Valor de max-age inválido.";
+                    value = "header.hsts.invalidMaxAge";
                     deduction = SCORE_HSTS_INVALID_MAX_AGE;
                 }
             } else {
                 status = "warning";
-                value = "Falta la directiva max-age.";
+                value = "header.hsts.missingMaxAge";
                 deduction = SCORE_HSTS_MISSING_MAX_AGE_DIRECTIVE;
             }
         }
@@ -114,17 +114,17 @@ public class AuditHeadersService {
     private CspResult checkCSPHeader(Map<String, String> headers) {
         String cspHeaderValue = headers.get("content-security-policy");
         String status = "success";
-        String value = "Configurado";
+        String value = "header.configured";
         int deduction = 0;
 
         if (cspHeaderValue == null) {
             status = "error";
-            value = "No configurado";
+            value = "header.notConfigured";
             deduction = SCORE_MISSING_CSP;
         } else {
             if (cspHeaderValue.contains("'unsafe-inline'") || cspHeaderValue.contains("'unsafe-eval'")) {
                 status = "warning";
-                value = "Contiene directivas inseguras ('unsafe-inline' o 'unsafe-eval').";
+                value = "header.csp.unsafeDirectives";
                 deduction = SCORE_CSP_UNSAFE_DIRECTIVE;
             }
         }
@@ -137,17 +137,17 @@ public class AuditHeadersService {
     private XfoResult checkXFOHeader(Map<String, String> headers) {
         String xfoHeaderValue = headers.get("x-frame-options");
         String status = "success";
-        String value = "Configurado";
+        String value = "header.configured";
         int deduction = 0;
 
         if (xfoHeaderValue == null) {
             status = "error";
-            value = "No configurado";
+            value = "header.notConfigured";
             deduction = SCORE_MISSING_XFO;
         } else {
             if (!("DENY".equalsIgnoreCase(xfoHeaderValue) || "SAMEORIGIN".equalsIgnoreCase(xfoHeaderValue))) {
                 status = "error";
-                value = "Valor inválido: '" + xfoHeaderValue + "'. Se espera 'DENY' o 'SAMEORIGIN'.";
+                value = "header.xframe.invalidValue:" + xfoHeaderValue;
                 deduction = SCORE_XFO_INVALID_VALUE;
             } else {
                 value = xfoHeaderValue.toUpperCase();
@@ -162,17 +162,17 @@ public class AuditHeadersService {
     private XctoResult checkXCTOHeader(Map<String, String> headers) {
         String xctoHeaderValue = headers.get("x-content-type-options");
         String status = "success";
-        String value = "Configurado";
+        String value = "header.configured";
         int deduction = 0;
 
         if (xctoHeaderValue == null) {
             status = "error";
-            value = "No configurado";
+            value = "header.notConfigured";
             deduction = SCORE_MISSING_XCTO;
         } else {
             if (!("nosniff".equalsIgnoreCase(xctoHeaderValue))) {
                 status = "error";
-                value = "Valor inválido: '" + xctoHeaderValue + "'. Se espera 'nosniff'.";
+                value = "header.xcto.invalidValue:" + xctoHeaderValue;
                 deduction = SCORE_XCTO_INVALID_VALUE;
             } else {
                 value = "nosniff";
@@ -187,12 +187,12 @@ public class AuditHeadersService {
     private RpResult checkReferrerPolicyHeader(Map<String, String> headers) {
         String rpHeaderValue = headers.get("referrer-policy");
         String status = "success";
-        String value = "Configurado";
+        String value = "header.configured";
         int deduction = 0;
 
         if (rpHeaderValue == null) {
             status = "warning";
-            value = "No configurado";
+            value = "header.notConfigured";
             deduction = SCORE_MISSING_OR_UNSAFE_RP;
         } else {
             List<String> secureValues = List.of("no-referrer", "same-origin", "strict-origin-when-cross-origin", "no-referrer-when-downgrade");
@@ -202,7 +202,7 @@ public class AuditHeadersService {
                 value = rpHeaderValue.toLowerCase();
             } else {
                 status = "warning";
-                value = "Valor no recomendado: '" + rpHeaderValue + "'.";
+                value = "header.referrer.unsafeValue:" + rpHeaderValue;
                 deduction = SCORE_MISSING_OR_UNSAFE_RP;
             }
         }

@@ -26,7 +26,7 @@ public class ServerConfigAuditService {
             score += httpsResult.score;
             items.add(new SecurityItem(
                 "https",
-                "HTTPS",
+                "label.https",
                 httpsResult.value,
                 httpsResult.status
             ));
@@ -36,7 +36,7 @@ public class ServerConfigAuditService {
             score += redirectResult.score;
             items.add(new SecurityItem(
                 "redirect",
-                "Redirección HTTP",
+                "label.redirect",
                 redirectResult.value,
                 redirectResult.status
             ));
@@ -46,7 +46,7 @@ public class ServerConfigAuditService {
             score += compressionResult.score;
             items.add(new SecurityItem(
                 "compression",
-                "Compresión GZIP",
+                "label.compression",
                 compressionResult.value,
                 compressionResult.status
             ));
@@ -56,17 +56,17 @@ public class ServerConfigAuditService {
             score += dirListingResult.score;
             items.add(new SecurityItem(
                 "directory-listing",
-                "Listado de directorios",
+                "label.directory-listing",
                 dirListingResult.value,
                 dirListingResult.status
             ));
 
         } catch (Exception e) {
             score = 50;
-            items.add(new SecurityItem("https", "HTTPS", "No verificable", "warning"));
-            items.add(new SecurityItem("redirect", "Redirección HTTP", "No verificable", "warning"));
-            items.add(new SecurityItem("compression", "Compresión GZIP", "No verificable", "warning"));
-            items.add(new SecurityItem("directory-listing", "Listado de directorios", "No verificable", "warning"));
+            items.add(new SecurityItem("https", "label.https", "server.notVerifiable", "warning"));
+            items.add(new SecurityItem("redirect", "label.redirect", "server.notVerifiable", "warning"));
+            items.add(new SecurityItem("compression", "label.compression", "server.notVerifiable", "warning"));
+            items.add(new SecurityItem("directory-listing", "label.directory-listing", "server.notVerifiable", "warning"));
         }
 
         score = Math.max(0, Math.min(100, score));
@@ -89,9 +89,9 @@ public class ServerConfigAuditService {
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 
                 if (response.statusCode() < 400) {
-                    return new HttpsCheckResult("Habilitado", "valid", 10);
+                    return new HttpsCheckResult("server.enabled", "valid", 10);
                 } else {
-                    return new HttpsCheckResult("Error SSL", "error", -20);
+                    return new HttpsCheckResult("server.sslError", "error", -20);
                 }
             } else {
                 // Intentar con HTTPS
@@ -112,13 +112,13 @@ public class ServerConfigAuditService {
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 
                 if (response.statusCode() < 400) {
-                    return new HttpsCheckResult("Habilitado", "valid", 10);
+                    return new HttpsCheckResult("server.enabled", "valid", 10);
                 } else {
-                    return new HttpsCheckResult("Deshabilitado", "error", -30);
+                    return new HttpsCheckResult("server.disabled", "error", -30);
                 }
             }
         } catch (Exception e) {
-            return new HttpsCheckResult("Deshabilitado", "error", -30);
+            return new HttpsCheckResult("server.disabled", "error", -30);
         }
     }
 
@@ -126,7 +126,7 @@ public class ServerConfigAuditService {
         try {
             // Solo verificar si la URL original es HTTP
             if (url.startsWith("https://")) {
-                return new RedirectCheckResult("No aplica (ya es HTTPS)", "valid", 0);
+                return new RedirectCheckResult("server.notApplicable", "valid", 0);
             }
             
             String httpUrl = url;
@@ -155,19 +155,19 @@ public class ServerConfigAuditService {
                     .anyMatch(loc -> loc.startsWith("https://"));
                 
                 if (redirectsToHttps) {
-                    return new RedirectCheckResult("Activa", "valid", 15);
+                    return new RedirectCheckResult("server.active", "valid", 15);
                 } else {
-                    return new RedirectCheckResult("Redirección sin HTTPS", "warning", -5);
+                    return new RedirectCheckResult("server.redirectNoHttps", "warning", -5);
                 }
             } else if (statusCode >= 200 && statusCode < 300) {
                 // Responde HTTP sin redireccionar - MAL
-                return new RedirectCheckResult("Inactiva", "error", -25);
+                return new RedirectCheckResult("server.inactive", "error", -25);
             } else {
-                return new RedirectCheckResult("No verificable", "warning", 0);
+                return new RedirectCheckResult("server.notVerifiable", "warning", 0);
             }
             
         } catch (Exception e) {
-            return new RedirectCheckResult("No verificable", "warning", 0);
+            return new RedirectCheckResult("server.notVerifiable", "warning", 0);
         }
     }
 
@@ -193,13 +193,13 @@ public class ServerConfigAuditService {
                 .anyMatch(enc -> enc.toLowerCase().contains("gzip"));
             
             if (hasGzip) {
-                return new CompressionCheckResult("Habilitada", "valid", 5);
+                return new CompressionCheckResult("server.enabled", "valid", 5);
             } else {
-                return new CompressionCheckResult("Deshabilitada", "warning", -10);
+                return new CompressionCheckResult("server.disabled", "warning", -10);
             }
-            
+
         } catch (Exception e) {
-            return new CompressionCheckResult("No verificable", "warning", 0);
+            return new CompressionCheckResult("server.notVerifiable", "warning", 0);
         }
     }
 
@@ -239,19 +239,19 @@ public class ServerConfigAuditService {
                             (body.contains("<a href=") && body.contains("[dir]"));
                         
                         if (isDirectoryListing) {
-                            return new DirectoryListingCheckResult("Habilitado", "error", -35);
+                            return new DirectoryListingCheckResult("server.enabled", "error", -35);
                         }
                     }
                 } catch (Exception e) {
                     // Continuar con el siguiente path
                 }
             }
-            
+
             // No se encontró listado de directorios en ningún path probado
-            return new DirectoryListingCheckResult("Deshabilitado", "valid", 10);
-            
+            return new DirectoryListingCheckResult("server.disabled", "valid", 10);
+
         } catch (Exception e) {
-            return new DirectoryListingCheckResult("No verificable", "warning", 0);
+            return new DirectoryListingCheckResult("server.notVerifiable", "warning", 0);
         }
     }
 

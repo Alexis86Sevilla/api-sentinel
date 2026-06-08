@@ -49,55 +49,55 @@ public class SslInfoService {
                     String algorithm = extractAlgorithm(sigAlg);
                     int certScore = calculateCertificateScore(algorithm);
                     score += certScore;
-                    
+
                     items.add(new SecurityItem(
                         "certificate",
-                        "Certificado SSL",
-                        "Válido (" + algorithm + ")",
+                        "label.certificate",
+                        "ssl.validWithAlgorithm:" + algorithm,
                         certScore >= 0 ? "valid" : "warning"
                     ));
-                    
+
                     // TLS Protocol
                     String protocol = session.getProtocol();
                     String protocolVersion = protocol.replace("TLS", "TLS ").replace("  ", " ");
                     int protocolScore = calculateProtocolScore(protocol);
                     score += protocolScore;
                     boolean isModern = protocolScore >= 0;
-                    
+
                     items.add(new SecurityItem(
                         "protocol",
-                        "Protocolo TLS",
+                        "label.protocol",
                         protocolVersion,
                         isModern ? "valid" : "warning"
                     ));
-                    
+
                     // Expiration
                     Instant notAfter = cert.getNotAfter().toInstant();
                     Instant now = Instant.now();
                     long daysUntilExpiry = ChronoUnit.DAYS.between(now, notAfter);
                     int expiryScore = calculateExpirationScore(daysUntilExpiry);
                     score += expiryScore;
-                    String expiryStatus = daysUntilExpiry > 30 ? "valid" 
-                        : daysUntilExpiry > 7 ? "warning" 
+                    String expiryStatus = daysUntilExpiry > 30 ? "valid"
+                        : daysUntilExpiry > 7 ? "warning"
                         : "invalid";
-                    
+
                     items.add(new SecurityItem(
                         "expiration",
-                        "Expiración",
-                        daysUntilExpiry + " días",
+                        "label.expiration",
+                        "ssl.daysUntilExpiry:" + daysUntilExpiry,
                         expiryStatus
                     ));
-                    
+
                     // Cipher Suite
                     String cipherSuite = session.getCipherSuite();
                     String cipher = extractCipherName(cipherSuite);
                     int cipherScore = calculateCipherScore(cipherSuite);
                     score += cipherScore;
                     boolean isStrong = cipherScore >= 0;
-                    
+
                     items.add(new SecurityItem(
                         "cipher",
-                        "Cifrado",
+                        "label.cipher",
                         cipher,
                         isStrong ? "valid" : "warning"
                     ));
@@ -108,26 +108,26 @@ public class SslInfoService {
             score = 0;
             items.add(new SecurityItem(
                 "certificate",
-                "Certificado SSL",
-                "Error: " + e.getMessage(),
+                "label.certificate",
+                "ssl.error:" + e.getMessage(),
                 "error"
             ));
             items.add(new SecurityItem(
                 "protocol",
-                "Protocolo TLS",
-                "No disponible",
+                "label.protocol",
+                "ssl.notAvailable",
                 "error"
             ));
             items.add(new SecurityItem(
                 "expiration",
-                "Expiración",
-                "No disponible",
+                "label.expiration",
+                "ssl.notAvailable",
                 "error"
             ));
             items.add(new SecurityItem(
                 "cipher",
-                "Cifrado",
-                "No disponible",
+                "label.cipher",
+                "ssl.notAvailable",
                 "error"
             ));
         }

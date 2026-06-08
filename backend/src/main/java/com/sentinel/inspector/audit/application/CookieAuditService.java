@@ -50,10 +50,10 @@ public class CookieAuditService {
 
             if (cookies.isEmpty()) {
                 // No hay cookies - es bueno para seguridad
-                items.add(new SecurityItem("secure", "Secure Flag", "No hay cookies", "valid"));
-                items.add(new SecurityItem("httponly", "HttpOnly", "No hay cookies", "valid"));
-                items.add(new SecurityItem("samesite", "SameSite", "No hay cookies", "valid"));
-                items.add(new SecurityItem("thirdparty", "Cookies de terceros", "0 detectadas", "valid"));
+                items.add(new SecurityItem("secure", "label.secure", "cookie.noCookies", "valid"));
+                items.add(new SecurityItem("httponly", "label.httponly", "cookie.noCookies", "valid"));
+                items.add(new SecurityItem("samesite", "label.samesite", "cookie.noCookies", "valid"));
+                items.add(new SecurityItem("thirdparty", "label.thirdparty", "cookie.detectedCount:0", "valid"));
                 return new SecurityAuditResult(100, items);
             }
 
@@ -63,21 +63,21 @@ public class CookieAuditService {
             score += secureScore;
             items.add(new SecurityItem(
                 "secure",
-                "Secure Flag",
-                allSecure ? "Habilitado" : "Deshabilitado",
+                "label.secure",
+                allSecure ? "cookie.enabled" : "cookie.disabled",
                 allSecure ? "valid" : "error"
             ));
 
             // Analizar HttpOnly
-            boolean allHttpOnly = cookies.stream().allMatch(cookie -> 
+            boolean allHttpOnly = cookies.stream().allMatch(cookie ->
                 cookie.toString().toLowerCase().contains("httponly")
             );
             int httpOnlyScore = allHttpOnly ? 5 : -20;
             score += httpOnlyScore;
             items.add(new SecurityItem(
                 "httponly",
-                "HttpOnly",
-                allHttpOnly ? "Habilitado" : "Deshabilitado",
+                "label.httponly",
+                allHttpOnly ? "cookie.enabled" : "cookie.disabled",
                 allHttpOnly ? "valid" : "warning"
             ));
 
@@ -86,7 +86,7 @@ public class CookieAuditService {
             score += sameSiteAnalysis.score;
             items.add(new SecurityItem(
                 "samesite",
-                "SameSite",
+                "label.samesite",
                 sameSiteAnalysis.value,
                 sameSiteAnalysis.status
             ));
@@ -97,17 +97,17 @@ public class CookieAuditService {
             score += thirdPartyScore;
             items.add(new SecurityItem(
                 "thirdparty",
-                "Cookies de terceros",
-                thirdPartyCount + " detectadas",
+                "label.thirdparty",
+                "cookie.detectedCount:" + thirdPartyCount,
                 thirdPartyCount == 0 ? "valid" : thirdPartyCount > 5 ? "error" : "warning"
             ));
 
         } catch (Exception e) {
             score = 0;
-            items.add(new SecurityItem("secure", "Secure Flag", "Error: " + e.getMessage(), "error"));
-            items.add(new SecurityItem("httponly", "HttpOnly", "No disponible", "error"));
-            items.add(new SecurityItem("samesite", "SameSite", "No disponible", "error"));
-            items.add(new SecurityItem("thirdparty", "Cookies de terceros", "Error", "error"));
+            items.add(new SecurityItem("secure", "label.secure", "cookie.error:" + e.getMessage(), "error"));
+            items.add(new SecurityItem("httponly", "label.httponly", "cookie.notAvailable", "error"));
+            items.add(new SecurityItem("samesite", "label.samesite", "cookie.notAvailable", "error"));
+            items.add(new SecurityItem("thirdparty", "label.thirdparty", "cookie.error", "error"));
         }
 
         score = Math.max(0, Math.min(100, score));
@@ -127,15 +127,15 @@ public class CookieAuditService {
         long missingCount = cookies.size() - strictCount - laxCount - noneCount;
 
         if (strictCount == cookies.size()) {
-            return new SameSiteAnalysis("Strict", "valid", 10);
+            return new SameSiteAnalysis("cookie.strict", "valid", 10);
         } else if (strictCount + laxCount == cookies.size()) {
-            return new SameSiteAnalysis("Lax/Mixed", "valid", 5);
+            return new SameSiteAnalysis("cookie.laxMixed", "valid", 5);
         } else if (noneCount > 0) {
-            return new SameSiteAnalysis("None (inseguro)", "error", -30);
+            return new SameSiteAnalysis("cookie.noneInsecure", "error", -30);
         } else if (missingCount > 0) {
-            return new SameSiteAnalysis("Falta atributo", "warning", -15);
+            return new SameSiteAnalysis("cookie.missingAttribute", "warning", -15);
         } else {
-            return new SameSiteAnalysis("Lax", "valid", 0);
+            return new SameSiteAnalysis("cookie.lax", "valid", 0);
         }
     }
 
