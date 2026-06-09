@@ -6,13 +6,11 @@ import com.sentinel.inspector.audit.application.ServerConfigAuditService;
 import com.sentinel.inspector.audit.application.SslInfoService;
 import com.sentinel.inspector.audit.application.VulnerabilityAuditService;
 import com.sentinel.inspector.audit.domain.model.SecurityAuditResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/audit")
+@CrossOrigin(origins = "*")
 public class AuditController {
 
     private final AuditHeadersService auditHeadersService;
