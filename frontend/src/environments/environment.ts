@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.com/api'
+  apiUrl: 'https://api-sentinel-backend-o67f.onrender.com'
 };
