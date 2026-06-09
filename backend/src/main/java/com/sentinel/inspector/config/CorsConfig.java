@@ -8,11 +8,8 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins(
-                        "http://localhost:4200",
-                        "https://tu-proyecto.pages.dev"
-                )
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedOrigins("https://api-sentinel.pages.dev", "http://localhost:4200")
+                .allowedMethods("GET", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
