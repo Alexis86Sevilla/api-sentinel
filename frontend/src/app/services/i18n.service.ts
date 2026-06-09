@@ -1,5 +1,6 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import esTranslations from '../../assets/i18n/es.json';
 
 export type Language = 'es' | 'en';
 
@@ -8,17 +9,22 @@ export type Language = 'es' | 'en';
 })
 export class I18nService {
   private currentLang = signal<Language>('es');
-  private translations = signal<Record<string, any>>({});
-  private loaded = signal<boolean>(false);
+  private translations = signal<Record<string, any>>(esTranslations);
+  private loaded = signal<boolean>(true);
 
   currentLanguage = this.currentLang.asReadonly();
   isLoaded = this.loaded.asReadonly();
 
-  constructor(private http: HttpClient) {
-    this.loadTranslations('es');
-  }
+  constructor(private http: HttpClient) {}
 
   async loadTranslations(lang: Language): Promise<void> {
+    if (lang === 'es') {
+      this.translations.set(esTranslations);
+      this.currentLang.set('es');
+      this.loaded.set(true);
+      return;
+    }
+
     try {
       const data = await this.http.get<Record<string, any>>(`/assets/i18n/${lang}.json`).toPromise();
       if (data) {
