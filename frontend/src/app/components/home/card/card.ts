@@ -51,7 +51,7 @@ export class SecurityCard {
     }));
   });
 
-  private translationPrefixes = ['header.', 'server.', 'vuln.', 'ssl.', 'cookie.'];
+  private translationPrefixes = ['header.', 'server.', 'vuln.', 'ssl.', 'cookie.', 'label.'];
 
   private isTranslationKey(value: string): boolean {
     return this.translationPrefixes.some(prefix => value.startsWith(prefix));
