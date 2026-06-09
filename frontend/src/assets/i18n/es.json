@@ -31,13 +31,7 @@
     "vulnerabilities": "Vulnerabilidades",
     "serverConfig": "Configuración del Servidor"
   },
-  "status": {
-    "valid": "Válido",
-    "success": "Éxito",
-    "warning": "Advertencia",
-    "error": "Error",
-    "invalid": "Inválido"
-  },
+
   "header": {
     "configured": "Configurado",
     "notConfigured": "No configurado",
