@@ -1,14 +1,12 @@
-# Etapa 1: Construir el archivo .jar
-FROM eclipse-temurin:21-jdk-alpine AS builder
+# Etapa 1: Construir el archivo .jar usando una imagen oficial de Maven
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
 COPY . .
-# Otorga permisos de ejecución al wrapper de Maven
-RUN chmod +x mvnw
-RUN ./mvnw clean package -DskipTests
+# Ahora usamos 'mvn' directo, sin el './mvnw'
+RUN mvn clean package -DskipTests
 
 # Etapa 2: Ejecutar la aplicación
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
-# -Xmx300m asegura que Java no consuma todos los 512MB del servidor
 ENTRYPOINT ["java", "-Xmx300m", "-Xss512k", "-jar", "app.jar"]
