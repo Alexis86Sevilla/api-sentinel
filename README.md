@@ -7,7 +7,7 @@ Analizador de seguridad web moderno y completo. Audita cualquier sitio web en se
 
 ## Demo
 
-![Security Analyzer](screenshot.png)
+[Security Analyzer](https://api-sentinel.pages.dev/)
 
 ## Características
 
