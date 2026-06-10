@@ -32,8 +32,7 @@ api-sentinel/
 └── frontend/         # Angular 21 - SPA
     ├── Angular 21
     ├── TypeScript
-    ├── Tailwind CSS
-    └── Vitest
+    └── Tailwind CSS
 ```
 
 ## Categorías Auditadas
@@ -61,7 +60,7 @@ API disponible en: `http://localhost:8080`
 
 ```bash
 cd frontend
-npm install
+pnpm install
 ng serve
 ```
 

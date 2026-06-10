@@ -4,7 +4,7 @@ Frontend Angular 21 para el analizador de seguridad web. Interfaz moderna y resp
 
 ## Demo
 
-![Security Analyzer](screenshot.png)
+[Security Analyzer](https://api-sentinel.pages.dev/)
 
 ## Características
 
@@ -20,7 +20,6 @@ Frontend Angular 21 para el analizador de seguridad web. Interfaz moderna y resp
 - Angular 21
 - TypeScript
 - Tailwind CSS
-- Vitest (testing)
 
 ## Estructura
 
@@ -44,7 +43,7 @@ src/app/
 
 ```bash
 cd frontend
-npm install
+pnpm install
 ```
 
 ## Desarrollo
@@ -59,12 +58,6 @@ Abrir `http://localhost:4200`
 
 ```bash
 ng build --configuration production
-```
-
-## Tests
-
-```bash
-ng test
 ```
 
 ## Características Implementadas
